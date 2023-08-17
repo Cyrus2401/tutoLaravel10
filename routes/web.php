@@ -25,7 +25,7 @@ Route::post('/login', [AuthController::class, 'doLogin']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 
-Route::prefix("/blog")->name('blog.')->controller(BlogController::class)->group(function(){
+Route::prefix("/blog")->name('blog.')->middleware('auth')->controller(BlogController::class)->group(function(){
 
     Route::get('/', 'index')->name('index');
 

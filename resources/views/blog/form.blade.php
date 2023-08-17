@@ -1,8 +1,17 @@
-<form action="" class="vstack gap-2" method="POST">
+<form action="" class="vstack gap-2" method="POST" enctype="multipart/form-data">
 
     @csrf
 
-    <div class="form-group">
+    <div class="form-group mt-3">
+        <label for="image" class="form-label">Image</label>
+        <input type="file" class="form-control" name="image" value="">
+        @error('image')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+
+    <div class="form-group mt-3">
         <label for="title" class="form-label">Title</label>
         <input type="text" class="form-control" name="title" value="{{ old('title', $post->title) }}">
         @error('title')
@@ -10,7 +19,7 @@
         @enderror
     </div>
 
-    <div class="form-group">
+    <div class="form-group mt-3">
         <label for="content" class="form-label">Content</label>
         <textarea name="content" class="form-control" id="content">{{ old('content', $post->content) }}</textarea>
         @error('content')
@@ -42,7 +51,7 @@
     </div>
     
     
-    <div class="form-group mt-2">
+    <div class="form-group mt-3">
         @if($post->id)
             <button class="btn btn-primary">Modifier</button>
         @else

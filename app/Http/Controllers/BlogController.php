@@ -14,7 +14,7 @@ class BlogController extends Controller
 {
 
     public function index(){
-        $posts = Post::paginate(2);
+        $posts = Post::paginate(5);
         return view('blog.index', ['posts' => $posts]);
     }
 
@@ -40,15 +40,25 @@ class BlogController extends Controller
             // 'slug' => 'required|min:8|regex:/^[0-9a-z\-]+$/',
             'content' => 'required',
             'category' => 'required|exists:categories,id',
-            'tag' => 'array|exists:tags,id|required'
+            'tag' => 'array|exists:tags,id|required',
+            'image' => 'image|max:2000'
         ]);
-        
+
+        $image = request('image');
+
+        if($image != null){
+            $imagePath = $image->store('blog', 'public');
+        }else{
+            $imagePath = "";
+        }
+
         $post = Post::create([
             'title' => request('title'),
             'content' => request('content'),
             'slug' => \Str::slug(request('title')),
             'category_id' => request('category'),
-            'tag' => request('tag')
+            'tag' => request('tag'),
+            'image' => $imagePath
         ]);
 
         $success_message = "L'article a été ajouté avec succes !";
@@ -88,5 +98,5 @@ class BlogController extends Controller
         return redirect()->route('blog.show', ['slug' => $post->slug, 'post' => $post->id])->with('success', $success_message);
 
     }
-    
+
 }
