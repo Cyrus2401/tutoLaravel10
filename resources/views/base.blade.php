@@ -47,10 +47,22 @@
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                <div class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    @auth
+                        <div class="nav-item">
+                            {{ Auth::user()->name }}
+                        </div>
+                        <form class="nav-item" action="{{ route('auth.logout') }}" method="POST">
+                            @csrf
+                            <button class="nav-link text-light">Se déconnecter</button>
+                        </form>
+                    @endauth
+                    @guest
+                        <div class="nav-item">
+                            <a href="{{ route('auth.login') }}" class="text-light">Se connecter</a>
+                        </div>
+                    @endguest
+                </div>
             </div>
         </div>
     </nav>
